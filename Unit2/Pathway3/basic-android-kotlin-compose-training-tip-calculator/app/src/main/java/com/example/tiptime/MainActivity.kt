@@ -187,7 +187,7 @@ private fun calculateTip(amount: Double, tipPercent: Double = 15.0, roundUp: Boo
 @Preview
 @Composable
 fun TipTimeScreenPreview() {
-    TipTimeTheme {
+    TipTimeTheme(darkTheme = false) {
         TipTimeScreen()
     }
 }

@@ -41,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,7 +54,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            LemonadeTheme {
+            LemonadeTheme{
                 LemonApp()
             }
         }
@@ -72,13 +73,13 @@ fun LemonApp() {
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colors.background
+        color = colorResource(id = R.color.purple_200)
     ) {
         when (currentStep) {
             1 -> {
                 // Display lemon tree image and ask user to pick a lemon from the tree
                 LemonTextAndImage(
-                    textLabelResourceId = R.string.lemon_select,
+                    textLabelResourceId = stringResource(R.string.lemon_select),
                     drawableResourceId = R.drawable.lemon_tree,
                     contentDescriptionResourceId = R.string.lemon_tree_content_description,
                     onImageClick = {
@@ -94,7 +95,7 @@ fun LemonApp() {
             2 -> {
                 // Display lemon image and ask user to squeeze the lemon
                 LemonTextAndImage(
-                    textLabelResourceId = R.string.lemon_squeeze,
+                    textLabelResourceId = stringResource(R.string.lemon_squeeze)+" 자리하자 : $squeezeCount",
                     drawableResourceId = R.drawable.lemon_squeeze,
                     contentDescriptionResourceId = R.string.lemon_content_description,
                     onImageClick = {
@@ -110,7 +111,7 @@ fun LemonApp() {
             3 -> {
                 // Display glass of lemonade image and ask user to drink the lemonade
                 LemonTextAndImage(
-                    textLabelResourceId = R.string.lemon_drink,
+                    textLabelResourceId = stringResource(R.string.lemon_drink),
                     drawableResourceId = R.drawable.lemon_drink,
                     contentDescriptionResourceId = R.string.lemonade_content_description,
                     onImageClick = {
@@ -122,7 +123,7 @@ fun LemonApp() {
             4 -> {
                 // Display empty glass image and ask user to start again
                 LemonTextAndImage(
-                    textLabelResourceId = R.string.lemon_empty_glass,
+                    textLabelResourceId = stringResource(R.string.lemon_empty_glass),
                     drawableResourceId = R.drawable.lemon_restart,
                     contentDescriptionResourceId = R.string.empty_glass_content_description,
                     onImageClick = {
@@ -147,7 +148,7 @@ fun LemonApp() {
  */
 @Composable
 fun LemonTextAndImage(
-    textLabelResourceId: Int,
+    textLabelResourceId: String,
     drawableResourceId: Int,
     contentDescriptionResourceId: Int,
     onImageClick: () -> Unit,
@@ -159,7 +160,7 @@ fun LemonTextAndImage(
         modifier = modifier.fillMaxSize()
     ) {
         Text(
-            text = stringResource(textLabelResourceId),
+            text = textLabelResourceId,
             fontSize = 18.sp
         )
         Spacer(modifier = Modifier.height(16.dp))
