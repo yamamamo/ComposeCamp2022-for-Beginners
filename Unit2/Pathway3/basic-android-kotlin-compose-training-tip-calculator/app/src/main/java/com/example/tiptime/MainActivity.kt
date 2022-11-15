@@ -20,6 +20,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -56,6 +57,7 @@ import java.text.NumberFormat
 import java.util.*
 
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,7 +135,7 @@ fun TipTimeScreen() {
         var clickNum by remember { mutableStateOf(0)}
         Button(onClick = {
             clickNum++
-            Toast.makeText(context, "자리하자  $clickNum", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "출발하자  $clickNum", Toast.LENGTH_LONG).show()
 
         }) {
             Text(text = "클릭 $clickNum")
@@ -147,23 +149,45 @@ fun TipTimeScreen() {
 
         Counter(
             count = person,
+            image = R.drawable.ic_baseline_add_24,
             updateCount = { newCount ->
                 personNum = newCount.toString()
             }
+        )
+
+        Counter(
+            count = person,
+            image = R.drawable.ic_baseline_remove_24,
+            updateCount = { newCount ->
+                personNum = newCount.toString()
+            }
+        )
+
+        Text(
+            text = "자리하자 $personNum",
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
         )
     }
 }
 
 @Composable
-fun Counter(count: Int, updateCount: (Int) -> Unit) {
+fun Counter(count: Int, image: Int, updateCount: (Int) -> Unit) {
     Button(
-        onClick = { updateCount(count + 1) },
+        onClick = {
+            if(image == R.drawable.ic_baseline_add_24) updateCount(count + 1)
+            else updateCount( if(count == 0) 0 else count-1)
+        }
 
 //        color = defaultButtonColors(
 //            backgroundColor = if (count > 5) Color.Green else Color.White
 //        )
     ) {
-        Text("$count")
+        Image(
+            painter = painterResource(image),
+            contentDescription = "person up, down"
+        )
     }
 }
 
