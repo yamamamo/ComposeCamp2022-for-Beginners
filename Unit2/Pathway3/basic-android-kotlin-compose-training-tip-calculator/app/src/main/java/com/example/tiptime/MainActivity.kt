@@ -16,9 +16,11 @@
 package com.example.tiptime
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,11 +33,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Surface
-import androidx.compose.material.Switch
-import androidx.compose.material.SwitchDefaults
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,6 +53,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tiptime.ui.theme.TipTimeTheme
 import java.text.NumberFormat
+import java.util.*
+
+import androidx.compose.ui.platform.LocalContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +75,10 @@ fun TipTimeScreen() {
     var amountInput by remember { mutableStateOf("") }
     var tipInput by remember { mutableStateOf("") }
     var roundUp by remember { mutableStateOf(false) }
+    var personNum by remember { mutableStateOf("") }
 
+
+    val person = personNum.toIntOrNull() ?:0
     val amount = amountInput.toDoubleOrNull() ?: 0.0
     val tipPercent = tipInput.toDoubleOrNull() ?: 0.0
     val tip = calculateTip(amount, tipPercent, roundUp)
@@ -91,6 +95,7 @@ fun TipTimeScreen() {
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
         Spacer(Modifier.height(16.dp))
+
         EditNumberField(
             label = R.string.cost_of_service,
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -103,6 +108,7 @@ fun TipTimeScreen() {
             value = amountInput,
             onValueChanged = { amountInput = it }
         )
+
         EditNumberField(
             label = R.string.how_was_the_service,
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -123,6 +129,40 @@ fun TipTimeScreen() {
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
         )
+        val context = LocalContext.current
+        var clickNum by remember { mutableStateOf(0)}
+        Button(onClick = {
+            clickNum++
+            Toast.makeText(context, "자리하자  $clickNum", Toast.LENGTH_LONG).show()
+
+        }) {
+            Text(text = "클릭 $clickNum")
+        }
+        Text(
+            text = "자 드가자 $amountInput",
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Counter(
+            count = person,
+            updateCount = { newCount ->
+                personNum = newCount.toString()
+            }
+        )
+    }
+}
+
+@Composable
+fun Counter(count: Int, updateCount: (Int) -> Unit) {
+    Button(
+        onClick = { updateCount(count + 1) }
+//        colors = defaultButtonColors(
+//            backgroundColor = if (count > 5) Color.Green else Color.White
+//        )
+    ) {
+        Text("$count")
     }
 }
 
@@ -144,6 +184,21 @@ fun EditNumberField(
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions
     )
+}
+
+@Composable
+fun EditPersonField(
+    value: String,
+    onValueChanged: (String) -> Unit
+){
+    Row() {
+        Button(onClick = {
+
+        }) {
+
+        }
+    }
+    
 }
 
 @Composable
@@ -180,11 +235,11 @@ fun RoundTheTipRow(
 private fun calculateTip(amount: Double, tipPercent: Double = 15.0, roundUp: Boolean): String {
     var tip = tipPercent / 100 * amount
     if (roundUp)
-        tip = kotlin.math.ceil(tip)
-    return NumberFormat.getCurrencyInstance().format(tip)
+        tip = kotlin.math.ceil(tip) //올림
+    return NumberFormat.getCurrencyInstance(Locale.US).format(tip)
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun TipTimeScreenPreview() {
     TipTimeTheme(darkTheme = false) {
