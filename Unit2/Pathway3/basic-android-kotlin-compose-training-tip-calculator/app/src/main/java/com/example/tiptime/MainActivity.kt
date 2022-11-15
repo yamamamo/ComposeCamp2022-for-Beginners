@@ -157,8 +157,9 @@ fun TipTimeScreen() {
 @Composable
 fun Counter(count: Int, updateCount: (Int) -> Unit) {
     Button(
-        onClick = { updateCount(count + 1) }
-//        colors = defaultButtonColors(
+        onClick = { updateCount(count + 1) },
+
+//        color = defaultButtonColors(
 //            backgroundColor = if (count > 5) Color.Green else Color.White
 //        )
     ) {
