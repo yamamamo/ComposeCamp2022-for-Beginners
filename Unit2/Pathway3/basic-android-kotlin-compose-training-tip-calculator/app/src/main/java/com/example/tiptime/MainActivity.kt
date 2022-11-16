@@ -21,17 +21,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -77,13 +69,13 @@ fun TipTimeScreen() {
     var amountInput by remember { mutableStateOf("") }
     var tipInput by remember { mutableStateOf("") }
     var roundUp by remember { mutableStateOf(false) }
-    var personNum by remember { mutableStateOf("") }
+    var personNum by remember { mutableStateOf("1") }
 
 
     val person = personNum.toIntOrNull() ?:0
     val amount = amountInput.toDoubleOrNull() ?: 0.0
     val tipPercent = tipInput.toDoubleOrNull() ?: 0.0
-    val tip = calculateTip(amount, tipPercent, roundUp)
+    val tip = calculateTip(amount, tipPercent, roundUp, person)
 
     val focusManager = LocalFocusManager.current
 
@@ -123,6 +115,38 @@ fun TipTimeScreen() {
             value = tipInput,
             onValueChanged = { tipInput = it }
         )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .size(48.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Counter(
+                count = person,
+                image = R.drawable.ic_baseline_add_24,
+                updateCount = { newCount ->
+                    personNum = newCount.toString()
+                }
+            )
+            Spacer(Modifier.width(12.dp))
+            Counter(
+                count = person,
+                image = R.drawable.ic_baseline_remove_24,
+                updateCount = { newCount ->
+                    personNum = newCount.toString()
+                }
+            )
+            Spacer(Modifier.width(12.dp))
+
+            Text(
+                text = "$personNum  Person",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentWidth(Alignment.End),
+                fontSize = 20.sp,
+            )
+        }
+
         RoundTheTipRow(roundUp = roundUp, onRoundUpChanged = { roundUp = it })
         Spacer(Modifier.height(24.dp))
         Text(
@@ -131,44 +155,16 @@ fun TipTimeScreen() {
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
         )
-        val context = LocalContext.current
-        var clickNum by remember { mutableStateOf(0)}
-        Button(onClick = {
-            clickNum++
-            Toast.makeText(context, "출발하자  $clickNum", Toast.LENGTH_LONG).show()
+//        val context = LocalContext.current
+//        var clickNum by remember { mutableStateOf(0)}
+//        Button(onClick = {
+//            clickNum++
+//            Toast.makeText(context, "출발하자  $clickNum", Toast.LENGTH_LONG).show()
+//
+//        }) {
+//            Text(text = "클릭 $clickNum")
+//        }
 
-        }) {
-            Text(text = "클릭 $clickNum")
-        }
-        Text(
-            text = "자 드가자 $amountInput",
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
-
-        Counter(
-            count = person,
-            image = R.drawable.ic_baseline_add_24,
-            updateCount = { newCount ->
-                personNum = newCount.toString()
-            }
-        )
-
-        Counter(
-            count = person,
-            image = R.drawable.ic_baseline_remove_24,
-            updateCount = { newCount ->
-                personNum = newCount.toString()
-            }
-        )
-
-        Text(
-            text = "자리하자 $personNum",
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
     }
 }
 
@@ -177,12 +173,9 @@ fun Counter(count: Int, image: Int, updateCount: (Int) -> Unit) {
     Button(
         onClick = {
             if(image == R.drawable.ic_baseline_add_24) updateCount(count + 1)
-            else updateCount( if(count == 0) 0 else count-1)
-        }
-
-//        color = defaultButtonColors(
-//            backgroundColor = if (count > 5) Color.Green else Color.White
-//        )
+            else updateCount( if(count == 1) 1 else count-1)
+        },
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
     ) {
         Image(
             painter = painterResource(image),
@@ -257,8 +250,8 @@ fun RoundTheTipRow(
  * according to the local currency and display it onscreen.
  * Example would be "$10.00".
  */
-private fun calculateTip(amount: Double, tipPercent: Double = 15.0, roundUp: Boolean): String {
-    var tip = tipPercent / 100 * amount
+private fun calculateTip(amount: Double, tipPercent: Double = 15.0, roundUp: Boolean, person: Int): String {
+    var tip = tipPercent / 100 * amount/person
     if (roundUp)
         tip = kotlin.math.ceil(tip) //올림
     return NumberFormat.getCurrencyInstance(Locale.US).format(tip)
