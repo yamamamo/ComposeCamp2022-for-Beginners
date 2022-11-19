@@ -62,12 +62,12 @@ fun ArtworkSpace(){
             
             Spacer(modifier = Modifier.height(4.dp))
             PreviousNext(curPosition){ it->
-                curPosition=it
+                curPosition = it
             }
         }
 
 }
-///Modifier 어딨어요
+
 @Composable
 fun PreviousNext(position: Int, modifier: Modifier = Modifier, changePosition: (Int)->Unit){
     Row(modifier = Modifier
@@ -83,7 +83,8 @@ fun PreviousNext(position: Int, modifier: Modifier = Modifier, changePosition: (
                 else changePosition(position-1)
             },
             modifier = modifier
-                .wrapContentWidth(Alignment.Start)
+                .padding(8.dp)
+                .weight(1f)
         ) {
             Text(text = stringResource(R.string.btn_previous))
         }
@@ -94,8 +95,10 @@ fun PreviousNext(position: Int, modifier: Modifier = Modifier, changePosition: (
                 else changePosition(position+1)
             },
             modifier = modifier
-                .fillMaxWidth()
-                .wrapContentWidth(Alignment.End)
+//                .fillMaxWidth()
+//                .wrapContentWidth(Alignment.End)
+                .padding(8.dp)
+                .weight(1f)
         ){
             Text(text = stringResource(id = R.string.btn_next))
         }
@@ -119,7 +122,7 @@ fun CardImage(drawableId: Int, title: String, subject: String){
                     .border(0.2.dp, Color.LightGray)
             )
         }
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         Card(
 //            border = BorderStroke(2.3.dp, Color.LightGray),
             modifier = Modifier
@@ -128,7 +131,7 @@ fun CardImage(drawableId: Int, title: String, subject: String){
             elevation = 12.dp
 
         ) {
-            Column() {
+            Column(modifier = Modifier.padding(top = 12.dp, bottom = 8.dp)) {
                 Text(
                     text = title,
                     fontSize = 24.sp,
