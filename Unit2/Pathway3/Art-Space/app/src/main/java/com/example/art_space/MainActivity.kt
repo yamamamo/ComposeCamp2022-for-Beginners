@@ -102,7 +102,7 @@ fun PreviousNext(position: Int, modifier: Modifier = Modifier, changePosition: (
         ){
             Text(text = stringResource(id = R.string.btn_next))
         }
-    }
+    }/////////////////////////////
 }
 
 @Composable
