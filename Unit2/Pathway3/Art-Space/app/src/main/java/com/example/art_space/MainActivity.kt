@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -119,7 +120,8 @@ fun CardImage(drawableId: Int, title: String, subject: String){
                 contentDescription = "",
                 modifier = Modifier
                     .padding(36.dp)
-                    .border(0.2.dp, Color.LightGray)
+                    .border(0.2.dp, Color.LightGray),
+                contentScale = ContentScale.Crop
             )
         }
         Spacer(modifier = Modifier.height(24.dp))
