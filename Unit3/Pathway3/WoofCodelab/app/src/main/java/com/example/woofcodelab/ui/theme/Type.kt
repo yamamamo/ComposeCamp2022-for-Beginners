@@ -26,26 +26,26 @@ import com.example.woofcodelab.R
 // Set of Material typography styles to start with
 val Typography by lazy {
     Typography(
-    h1 = TextStyle(
-        fontFamily =  AbrilFatface,
-        fontWeight = FontWeight.Normal,
-        fontSize = 30.sp
-    ),
-    h2 = TextStyle(
-        fontFamily =  Montserrat,
-        fontWeight = FontWeight.Bold,
-        fontSize = 20.sp
-    ),
-    h3 = TextStyle(
-        fontFamily =  Montserrat,
-        fontWeight = FontWeight.Normal,
-        fontSize = 14.sp
-    ),
-    body1 = TextStyle(
-        fontFamily = Montserrat,
-        fontWeight = FontWeight.Normal,
-        fontSize = 14.sp
-    )
+        h1 = TextStyle(
+            fontFamily = AbrilFatface,
+            fontWeight = FontWeight.Normal,
+            fontSize = 30.sp
+        ),
+        h2 = TextStyle(
+            fontFamily = Montserrat,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
+        ),
+        h3 = TextStyle(
+            fontFamily = Montserrat,
+            fontWeight = FontWeight.Bold,
+            fontSize = 14.sp
+        ),
+        body1 = TextStyle(
+            fontFamily = Montserrat,
+            fontWeight = FontWeight.Normal,
+            fontSize = 14.sp
+        )
     )
 }
 
