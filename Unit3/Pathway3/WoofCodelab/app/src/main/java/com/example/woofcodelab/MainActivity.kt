@@ -29,6 +29,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -65,8 +66,10 @@ fun WoofApp() {
             WoofTopAppBar()
         }
     ) {
-        LazyColumn(modifier =
-        Modifier.background(MaterialTheme.colors.background)) {
+        LazyColumn(
+            modifier =
+            Modifier.background(MaterialTheme.colors.background)
+        ) {
             items(dogs) {
                 DogItem(dog = it)
             }
@@ -75,13 +78,13 @@ fun WoofApp() {
 }
 
 @Composable
-fun WoofTopAppBar(modifier: Modifier = Modifier){
+fun WoofTopAppBar(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .background(color = MaterialTheme.colors.primary),
         verticalAlignment = Alignment.CenterVertically
-    ){
+    ) {
         Image(
             modifier = Modifier
                 .size(64.dp)
@@ -111,19 +114,22 @@ fun DogItem(dog: Dog, modifier: Modifier = Modifier) {
         modifier = modifier.padding(8.dp),
         elevation = 4.dp
     ) {
-
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        ) {
-            DogIcon(dog.imageResourceId)
-            DogInformation(dog.name, dog.age)
-            Spacer(Modifier.weight(1f))
-            DogItemButton(
-                expanded = expanded,
-                onClick = { })
+        Column() {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+            ) {
+                DogIcon(dog.imageResourceId)
+                DogInformation(dog.name, dog.age)
+                Spacer(Modifier.weight(1f))
+                DogItemButton(
+                    expanded = expanded,
+                    onClick = { expanded = !expanded })
+            }
+            if (expanded) {
+                DogHobby(dog.hobbies)
+            }
         }
     }
 }
@@ -166,12 +172,35 @@ private fun DogItemButton(
     expanded: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
-){
+) {
     IconButton(onClick = onClick) {
+
         Icon(
-            imageVector = Icons.Filled.ExpandMore,
+            imageVector = if(!expanded) Icons.Filled.ExpandMore
+            else Icons.Filled.ExpandLess,
             tint = MaterialTheme.colors.secondary,
             contentDescription = stringResource(R.string.expand_button_content_description)
+        )
+    }
+}
+
+@Composable
+fun DogHobby(@StringRes dogHobby: Int, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.padding(
+            start = 16.dp,
+            top = 8.dp,
+            bottom = 16.dp,
+            end = 16.dp
+        )
+    ) {
+        Text(
+            text = stringResource(R.string.about),
+            style = MaterialTheme.typography.h3,
+        )
+        Text(
+            text = stringResource(dogHobby),
+            style = MaterialTheme.typography.body1,
         )
     }
 }
@@ -179,7 +208,7 @@ private fun DogItemButton(
 @Preview
 @Composable
 fun WoofPreview() {
-    WoofTheme(darkTheme = true) {
+    WoofTheme(darkTheme = false) {
         WoofApp()
     }
 }
