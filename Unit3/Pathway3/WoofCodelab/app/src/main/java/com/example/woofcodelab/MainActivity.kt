@@ -21,6 +21,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -38,6 +39,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -112,7 +114,9 @@ fun WoofTopAppBar(modifier: Modifier = Modifier) {
 @Composable
 fun DogItem(dog: Dog, modifier: Modifier = Modifier) {
     var expanded by remember { mutableStateOf(false) }
-
+    val color by animateColorAsState(
+        targetValue = if(expanded) MaterialTheme.colors.onSecondary else MaterialTheme.colors.surface,
+    )
     Card(
         modifier = modifier.padding(8.dp),
         elevation = 4.dp
@@ -124,9 +128,8 @@ fun DogItem(dog: Dog, modifier: Modifier = Modifier) {
                         dampingRatio = Spring.DampingRatioHighBouncy,
                         stiffness = Spring.StiffnessVeryLow
                     )
-                ) {
-                        initialValue,
-                        targetValue ->  }
+                )
+                .background(color = color)
         ) {
             Row(
                 modifier = Modifier
