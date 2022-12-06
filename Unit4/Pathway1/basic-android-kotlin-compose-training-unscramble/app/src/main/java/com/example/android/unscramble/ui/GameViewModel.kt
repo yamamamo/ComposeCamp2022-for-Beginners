@@ -33,8 +33,9 @@ import kotlinx.coroutines.flow.update
  */
 class GameViewModel : ViewModel() {
 
-    // Game UI state
+    //StateFlow는 현재 상태와 새로운 상태 업데이트를 내보내는 관찰가능한 데이터 홀더 흐름
     private val _uiState = MutableStateFlow(GameUiState())
+    //외부에서 읽기 전용 소겅 uiState를 사용해 값을 읽을 수 있다.
     val uiState: StateFlow<GameUiState> = _uiState.asStateFlow()
 
     var userGuess by mutableStateOf("")

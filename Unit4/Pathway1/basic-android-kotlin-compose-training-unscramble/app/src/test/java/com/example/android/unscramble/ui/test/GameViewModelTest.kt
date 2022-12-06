@@ -68,7 +68,7 @@ class GameViewModelTest {
         assertTrue(currentGameUiState.isGuessedWordWrong)
     }
 
-    @Test
+    @Test //성공 경로
     fun gameViewModel_CorrectWordGuessed_ScoreUpdatedAndErrorFlagUnset() {
         var currentGameUiState = viewModel.uiState.value
         val correctPlayerWord = getUnscrambledWord(currentGameUiState.currentScrambledWord)

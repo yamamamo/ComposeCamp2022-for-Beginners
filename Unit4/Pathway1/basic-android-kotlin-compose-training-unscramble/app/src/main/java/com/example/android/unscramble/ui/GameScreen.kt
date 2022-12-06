@@ -56,6 +56,7 @@ fun GameScreen(
     gameViewModel: GameViewModel = viewModel()
 ) {
     val gameUiState by gameViewModel.uiState.collectAsState()
+    //collectAsState() 은 StateFlow 에서 값을 수집하고 State을 통해 최신 값을 나타냄
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
@@ -213,7 +214,7 @@ private fun FinalScoreDialog(
 @Preview(showBackground = true)
 @Composable
 fun GameScreenPreview() {
-    UnscrambleTheme {
+    UnscrambleTheme (darkTheme = true){
         GameScreen()
     }
 }
